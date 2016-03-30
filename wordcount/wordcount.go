@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -13,7 +14,7 @@ var m map[interface{}]interface{}
 
 func Do() {
 	m = make(map[interface{}]interface{}, 100000)
-	err := filepath.Walk("C:/Users/M/Desktop/BigText", walkFn)
+	err := filepath.Walk("D:/Stroy", walkFn)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -21,7 +22,10 @@ func Do() {
 	//for _, item := range sortable.SortableMap(m) {
 	//	data = append(data, item.Key+"\t"+item.Value)
 	//}
-	err = ioutil.WriteFile("C:/Users/M/Desktop/BigText/Result-Go.txt", []byte(strings.Join(data, "\n")), os.ModeAppend)
+	for k, v := range m {
+		data = append(data, k.(string)+"\t"+strconv.Itoa(v.(int)))
+	}
+	err = ioutil.WriteFile("D:/Stroy/Result-Go.txt", []byte(strings.Join(data, "\n")), os.ModeAppend)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -40,7 +44,7 @@ func walkFn(path string, info os.FileInfo, err error) error {
 		return err
 	}
 	//文本处理可能存在顺序问题
-	text := strings.Split(strings.TrimSpace(string(data)), " ")
+	text := strings.Split(strings.Replace(strings.ToLower(string(data)), " ", "\n", -1), "\n")
 	for _, v := range text {
 		if m[v] != nil {
 			m[v] = m[v].(int) + 1
