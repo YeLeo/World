@@ -10,4 +10,5 @@ func main() {
 	fmt.Println(time.Now())
 	wordcount.Do()
 	fmt.Println(time.Now())
+	fmt.Scanln()
 }

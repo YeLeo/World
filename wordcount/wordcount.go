@@ -10,11 +10,11 @@ import (
 	"strings"
 )
 
-var m map[interface{}]interface{}
+var m map[string]int
 
 func Do() {
-	m = make(map[interface{}]interface{}, 100000)
-	err := filepath.Walk("D:/Stroy", walkFn)
+	m = make(map[string]int, 100000)
+	err := filepath.Walk("C:/Users/M/Desktop/BigText/", walkFn)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -23,9 +23,9 @@ func Do() {
 	//	data = append(data, item.Key+"\t"+item.Value)
 	//}
 	for k, v := range m {
-		data = append(data, k.(string)+"\t"+strconv.Itoa(v.(int)))
+		data = append(data, k+"\t"+strconv.Itoa(v))
 	}
-	err = ioutil.WriteFile("D:/Stroy/Result-Go.txt", []byte(strings.Join(data, "\n")), os.ModeAppend)
+	err = ioutil.WriteFile("C:/Users/M/Desktop/BigText/Result-go.txt", []byte(strings.Join(data, "\n")), os.ModeAppend)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -43,11 +43,15 @@ func walkFn(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return err
 	}
-	//文本处理可能存在顺序问题
-	text := strings.Split(strings.Replace(strings.ToLower(string(data)), " ", "\n", -1), "\n")
-	for _, v := range text {
-		if m[v] != nil {
-			m[v] = m[v].(int) + 1
+	text := string(data)
+	text = strings.Replace(text, "\r", " ", -1)
+	text = strings.Replace(text, "\n", " ", -1)
+	text = strings.Replace(text, "\t", " ", -1)
+	text = strings.ToLower(text)
+	textArray := strings.Split(text, " ")
+	for _, v := range textArray {
+		if m[v] != 0 {
+			m[v]++
 		} else {
 			m[v] = 1
 		}
