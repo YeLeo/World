@@ -29,7 +29,6 @@ func Do() {
 	if err != nil {
 		fmt.Println(err)
 	}
-
 }
 
 func walkFn(path string, info os.FileInfo, err error) error {
