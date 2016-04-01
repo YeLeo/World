@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	fmt.Println(time.Now())
-	wordcount.Do()
-	fmt.Println(time.Now())
+	start := time.Now()
+	wordcount.Do("C:/Users/M/Desktop/BigText/", "C:/Users/M/Desktop/BigText/Result-go.txt")
+	fmt.Println(time.Since(start))
 	fmt.Scanln()
 }

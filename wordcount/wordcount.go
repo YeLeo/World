@@ -2,33 +2,34 @@ package wordcount
 
 import (
 	"fmt"
-	//"github.com/yeleo/world/sortable"
+	"github.com/yeleo/world/sortable"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 )
 
-var m map[string]int
+var m map[interface{}]interface{}
 
-func Do() {
-	m = make(map[string]int, 100000)
-	err := filepath.Walk("C:/Users/M/Desktop/BigText/", walkFn)
+func Do(root, filename string) {
+	m = make(map[interface{}]interface{}, 100000)
+	err := filepath.Walk(root, walkFn)
 	if err != nil {
 		fmt.Println(err)
 	}
 	data := make([]string, 0, 100000)
-	//for _, item := range sortable.SortableMap(m) {
-	//	data = append(data, item.Key+"\t"+item.Value)
-	//}
-	for k, v := range m {
-		data = append(data, k+"\t"+strconv.Itoa(v))
+	sm := sortable.SortableMap(m, sortable.SortByValue, sortable.DESC)
+	sort.Sort(sm)
+	for _, item := range sm.Map {
+		data = append(data, item.Key.(string)+"\t"+strconv.Itoa(item.Value.(int)))
 	}
-	err = ioutil.WriteFile("C:/Users/M/Desktop/BigText/Result-go.txt", []byte(strings.Join(data, "\n")), os.ModeAppend)
+	err = ioutil.WriteFile(filename, []byte(strings.Join(data, "\n")), os.ModeAppend)
 	if err != nil {
 		fmt.Println(err)
 	}
+
 }
 
 func walkFn(path string, info os.FileInfo, err error) error {
@@ -49,8 +50,8 @@ func walkFn(path string, info os.FileInfo, err error) error {
 	text = strings.ToLower(text)
 	textArray := strings.Split(text, " ")
 	for _, v := range textArray {
-		if m[v] != 0 {
-			m[v]++
+		if m[v] != nil {
+			m[v] = m[v].(int) + 1
 		} else {
 			m[v] = 1
 		}
