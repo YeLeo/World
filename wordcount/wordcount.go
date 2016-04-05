@@ -39,6 +39,14 @@ func walkFn(path string, info os.FileInfo, err error) error {
 	if info.IsDir() {
 		return nil
 	}
+	err = textParse(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func textParse(path string) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
