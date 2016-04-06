@@ -1,9 +1,23 @@
-package sortable
+package util
+
+type Property int
+
+const (
+	SortByKey Property = iota + 1
+	SortByValue
+)
+
+type Mode int
+
+const (
+	ASC Mode = iota + 1
+	DESC
+)
 
 type SortedMap struct {
 	Map      []KeyValuePair
-	Property int
-	Mode     int
+	Property Property
+	Mode     Mode
 }
 
 type KeyValuePair struct {
@@ -11,17 +25,7 @@ type KeyValuePair struct {
 	Value interface{}
 }
 
-const (
-	SortByKey = iota + 1
-	SortByValue
-)
-
-const (
-	ASC = iota + 1
-	DESC
-)
-
-func SortableMap(m map[interface{}]interface{}, property int, mode int) SortedMap {
+func SortableMap(m map[interface{}]interface{}, property Property, mode Mode) SortedMap {
 	var sm SortedMap
 	sm.Map = make([]KeyValuePair, 0, len(m))
 	for k, v := range m {

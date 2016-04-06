@@ -2,7 +2,7 @@ package wordcount
 
 import (
 	"fmt"
-	"github.com/yeleo/world/sortable"
+	"github.com/yeleo/world/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -20,7 +20,7 @@ func Do(root, filename string) {
 		fmt.Println(err)
 	}
 	data := make([]string, 0, 100000)
-	sm := sortable.SortableMap(m, sortable.SortByValue, sortable.DESC)
+	sm := util.SortableMap(m, util.SortByValue, util.DESC)
 	sort.Sort(sm)
 	for _, item := range sm.Map {
 		data = append(data, item.Key.(string)+"\t"+strconv.Itoa(item.Value.(int)))
