@@ -14,10 +14,10 @@ const (
 	DESC
 )
 
-type SortedMap struct {
-	Map      []KeyValuePair
-	Property Property
-	Mode     Mode
+type SortableMap struct {
+	KeyValuePairs []KeyValuePair
+	SortProperty  Property
+	SortMode      Mode
 }
 
 type KeyValuePair struct {
@@ -25,32 +25,32 @@ type KeyValuePair struct {
 	Value interface{}
 }
 
-func SortableMap(m map[interface{}]interface{}, property Property, mode Mode) SortedMap {
-	var sm SortedMap
-	sm.Map = make([]KeyValuePair, 0, len(m))
+func InitMap(m map[interface{}]interface{}, property Property, mode Mode) SortableMap {
+	var sm SortableMap
+	sm.KeyValuePairs = make([]KeyValuePair, 0, len(m))
 	for k, v := range m {
-		sm.Map = append(sm.Map, KeyValuePair{k, v})
+		sm.KeyValuePairs = append(sm.KeyValuePairs, KeyValuePair{k, v})
 	}
-	sm.Property = property
-	sm.Mode = mode
+	sm.SortProperty = property
+	sm.SortMode = mode
 	return sm
 }
 
-func (sm SortedMap) Len() int {
-	return len(sm.Map)
+func (sm SortableMap) Len() int {
+	return len(sm.KeyValuePairs)
 }
 
-func (sm SortedMap) Less(i, j int) bool {
+func (sm SortableMap) Less(i, j int) bool {
 	var flag bool
-	switch sm.Property {
+	switch sm.SortProperty {
 	case SortByKey:
-		flag = compare(sm.Map[i].Key, sm.Map[j].Key)
+		flag = compare(sm.KeyValuePairs[i].Key, sm.KeyValuePairs[j].Key)
 	case SortByValue:
-		flag = compare(sm.Map[i].Value, sm.Map[j].Value)
+		flag = compare(sm.KeyValuePairs[i].Value, sm.KeyValuePairs[j].Value)
 	default:
 		panic("sortBy must be set!")
 	}
-	switch sm.Mode {
+	switch sm.SortMode {
 	case ASC:
 		return flag
 	case DESC:
@@ -60,8 +60,8 @@ func (sm SortedMap) Less(i, j int) bool {
 	}
 }
 
-func (sm SortedMap) Swap(i, j int) {
-	sm.Map[i], sm.Map[j] = sm.Map[j], sm.Map[i]
+func (sm SortableMap) Swap(i, j int) {
+	sm.KeyValuePairs[i], sm.KeyValuePairs[j] = sm.KeyValuePairs[j], sm.KeyValuePairs[i]
 }
 
 func compare(x, y interface{}) bool {
