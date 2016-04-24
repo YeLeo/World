@@ -10,7 +10,7 @@ import (
 
 func main() {
 	fmt.Println("YeLeo's world!")
-	fmt.Println("1:wordcount 2:Shuffle")
+	fmt.Println("1:WordCount 2:Shuffle 3:PlayCard")
 	var t int
 	fmt.Scan(&t)
 	start := time.Now()
@@ -18,11 +18,11 @@ func main() {
 	case 1:
 		wordcount.Do("C:/Users/M/Desktop/BigText/", "C:/Users/M/Desktop/BigText/Result-go.txt")
 	case 2:
-		cards := poker.InitCards()
+		deck := poker.NewDeck()
 		m := make(map[poker.Card][]int)
 		for i := 0; i < 100000; i++ {
-			poker.Shuffle(cards)
-			for index, card := range *cards {
+			deck.Shuffle()
+			for index, card := range deck.Cards {
 				if m[card] == nil {
 					m[card] = make([]int, 54)
 				}
@@ -40,9 +40,19 @@ func main() {
 			}
 			fmt.Print("\n")
 		}
+	case 3:
+		table := poker.NewTable()
+		fmt.Println("请输入玩家1用户名：")
+		var name string
+		fmt.Scan(&name)
+		table.AddPlayer(poker.Player{Name: name})
+		for key, value := range table.Players {
+			fmt.Println(key)
+			fmt.Println(value.Name)
+		}
+
 	default:
+
 	}
 	fmt.Println("TotalTime:" + time.Since(start).String())
-	//fmt.Scanln()
-	//fmt.Scanln()
 }

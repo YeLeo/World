@@ -93,14 +93,3 @@ func (s Suit) ToString() string {
 	}
 }
 
-func InitCards() *[]Card {
-	cards := make([]Card, 0)
-	for rank := TowRank; rank <= ACE; rank++ {
-		for suit := SPADE; suit <= CLUB; suit++ {
-			cards = append(cards, Card{Value: Rank(rank), Mark: Suit(suit)})
-		}
-	}
-	cards = append(cards, Card{Value: BLACKJOKER, Mark: JOKER})
-	cards = append(cards, Card{Value: REDJOKER, Mark: JOKER})
-	return &cards
-}
