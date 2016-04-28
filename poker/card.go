@@ -60,7 +60,7 @@ func (r Rank) ToString() string {
 	case BLACKJOKER:
 		return "joker"
 	case REDJOKER:
-		return "JOKER"
+		return "Joker"
 	default:
 		panic("Here can't find this rank!")
 	}

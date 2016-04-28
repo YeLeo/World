@@ -42,15 +42,24 @@ func main() {
 		}
 	case 3:
 		table := poker.NewTable()
-		fmt.Println("请输入玩家1用户名：")
-		var name string
-		fmt.Scan(&name)
-		table.AddPlayer(poker.Player{Name: name})
-		for key, value := range table.Players {
-			fmt.Println(key)
-			fmt.Println(value.Name)
+		for {
+			if len(table.Players) < 4 {
+				fmt.Printf("请输入玩家%d用户名：", len(table.Players)+1)
+				var name string
+				fmt.Scan(&name)
+				table.AddPlayer(poker.Player{Name: name})
+			} else {
+				break
+			}
+		}
+		for _, player := range table.Players {
+			player.Cards = table.Deck.PopCards(13)
 		}
 
+		for _, player := range table.Players {
+			fmt.Println(player.Name)
+			fmt.Println(player.Cards)
+		}
 	default:
 
 	}

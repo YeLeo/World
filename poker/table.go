@@ -2,7 +2,7 @@ package poker
 
 type Table struct {
 	Players []Player
-	Cards   Deck
+	Deck    Deck
 	Current Status
 	History []Status
 }
@@ -15,12 +15,13 @@ type Status struct {
 func NewTable() Table {
 	t := Table{
 		Players: make([]Player, 0, 4),
-		Cards:   NewDeck(),
+		Deck:    NewDeck(),
 		History: make([]Status, 0)}
 	return t
 }
 
-func (t Table) AddPlayer(p Player) {
-	//here likes should use a point?wait me test!
+func (t *Table) AddPlayer(p Player) {
 	t.Players = append(t.Players, p)
 }
+
+
