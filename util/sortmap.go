@@ -25,7 +25,7 @@ type KeyValuePair struct {
 	Value interface{}
 }
 
-func InitMap(m map[interface{}]interface{}, property Property, mode Mode) SortableMap {
+func CreateSM(m map[interface{}]interface{}, property Property, mode Mode) SortableMap {
 	var sm SortableMap
 	sm.KeyValuePairs = make([]KeyValuePair, 0, len(m))
 	for k, v := range m {

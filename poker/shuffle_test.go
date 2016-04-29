@@ -5,9 +5,13 @@ import (
 )
 
 func BenchmarkShuffle(b *testing.B) {
-	deck := NewDeck()
+
 	for i := 0; i < b.N; i++ {
+		deck := NewDeck()
 		deck.Shuffle()
+		p := Player{Cards: deck.PopCards(13)}
+		p.Name = "1"
+		p.SortCards()
 	}
 	b.ReportAllocs()
 }

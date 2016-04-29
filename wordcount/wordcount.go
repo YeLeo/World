@@ -57,7 +57,7 @@ func Do(root, filename string) {
 		return
 	}
 	data := make([]string, 0, 100000)
-	sm := util.InitMap(m, util.SortByValue, util.DESC)
+	sm := util.CreateSM(m, util.SortByValue, util.DESC)
 	sort.Sort(sm)
 	for _, item := range sm.KeyValuePairs {
 		data = append(data, item.Key.(string)+"\t"+strconv.Itoa(item.Value.(int)))

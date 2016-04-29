@@ -12,8 +12,7 @@ func (c Card) ToString() string {
 type Rank int
 
 const (
-	TowRank Rank = iota + 2
-	ThreeRank
+	ThreeRank Rank = iota
 	FourRank
 	FiveRank
 	SixRank
@@ -25,6 +24,7 @@ const (
 	QUEEN
 	KING
 	ACE
+	TowRank
 	BLACKJOKER
 	REDJOKER
 )
@@ -92,4 +92,3 @@ func (s Suit) ToString() string {
 		panic("Here can't find this suit!")
 	}
 }
-

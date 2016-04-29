@@ -23,10 +23,10 @@ func main() {
 		for i := 0; i < 100000; i++ {
 			deck.Shuffle()
 			for index, card := range deck.Cards {
-				if m[card] == nil {
-					m[card] = make([]int, 54)
+				if m[*card] == nil {
+					m[*card] = make([]int, 54)
 				}
-				m[card][index]++
+				m[*card][index]++
 			}
 		}
 		for key, value := range m {
@@ -47,20 +47,52 @@ func main() {
 				fmt.Printf("请输入玩家%d用户名：", len(table.Players)+1)
 				var name string
 				fmt.Scan(&name)
-				table.AddPlayer(poker.Player{Name: name})
+				table.AddPlayer(&poker.Player{Name: name})
 			} else {
 				break
 			}
 		}
+		table.Deck.Shuffle()
 		for _, player := range table.Players {
 			player.Cards = table.Deck.PopCards(13)
 		}
-
+		table.Banker.Cards = append(table.Banker.Cards, table.Deck.Cards)
 		for _, player := range table.Players {
+			player.SortCards()
 			fmt.Println(player.Name)
-			fmt.Println(player.Cards)
 		}
+
 	default:
+		//Pop(13) is random?Yes,though i know,test it
+		table := poker.NewTable()
+		result := make(map[*poker.Player][]int, 4)
+		for {
+			if len(table.Players) < 4 {
+				fmt.Printf("请输入玩家%d用户名：", len(table.Players)+1)
+				var name string
+				fmt.Scan(&name)
+				player := &poker.Player{Name: name}
+				table.AddPlayer(player)
+				result[player] = make([]int, 15)
+			} else {
+				break
+			}
+		}
+
+		for i := 0; i < 100000; i++ {
+			table.Deck = poker.NewDeck()
+			table.Deck.Shuffle()
+			for player, record := range result {
+				player.Cards = table.Deck.PopCards(13)
+				for _, card := range player.Cards {
+					record[int(card.Value)]++
+				}
+			}
+		}
+		for player, record := range result {
+			fmt.Println(player.Name)
+			fmt.Println(record)
+		}
 
 	}
 	fmt.Println("TotalTime:" + time.Since(start).String())
