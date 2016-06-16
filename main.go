@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/yeleo/world/chatroom"
 	"github.com/yeleo/world/poker"
 	"github.com/yeleo/world/wordcount"
 	"strconv"
@@ -10,7 +11,7 @@ import (
 
 func main() {
 	fmt.Println("YeLeo's world!")
-	fmt.Println("1:WordCount 2:Shuffle 3:PlayCard")
+	fmt.Println("1:WordCount 2:Shuffle 3:PlayCard 4:ChatRoom")
 	var t int
 	fmt.Scan(&t)
 	start := time.Now()
@@ -56,12 +57,13 @@ func main() {
 		for _, player := range table.Players {
 			player.Cards = table.Deck.PopCards(13)
 		}
-		table.Banker.Cards = append(table.Banker.Cards, table.Deck.Cards)
+		//table.Banker.Cards = append(table.Banker.Cards, table.Deck.Cards)
 		for _, player := range table.Players {
 			player.SortCards()
 			fmt.Println(player.Name)
 		}
-
+	case 4:
+		chatroom.Start()
 	default:
 		//Pop(13) is random?Yes,though i know,test it
 		table := poker.NewTable()
@@ -78,7 +80,6 @@ func main() {
 				break
 			}
 		}
-
 		for i := 0; i < 100000; i++ {
 			table.Deck = poker.NewDeck()
 			table.Deck.Shuffle()
@@ -93,7 +94,6 @@ func main() {
 			fmt.Println(player.Name)
 			fmt.Println(record)
 		}
-
 	}
 	fmt.Println("TotalTime:" + time.Since(start).String())
 }

@@ -5,7 +5,6 @@ type Table struct {
 	Deck    Deck
 	Current Status
 	History []*Status
-	Banker  *Player
 }
 
 type Status struct {
@@ -22,8 +21,9 @@ func NewTable() Table {
 }
 
 func (t *Table) AddPlayer(p *Player) {
-	if t.Banker == nil {
-		t.Banker = p
-	}
 	t.Players = append(t.Players, p)
+}
+
+func (t *Table) NewRound() {
+
 }
